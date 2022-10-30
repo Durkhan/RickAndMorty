@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">RickandMort</string>
+    <string name="title_reset">Reset</string>
+    <string name="title_filter">Filter</string>
+    <string name="title_gender">Gender</string>
+    <string name="title_status">Status</string>
+    <string name="title_episodes">Episodes</string>
+    <string name="alive">Alive</string>
+    <string name="title_location">Location</string>
+    <string name="title_origin">Origin</string>
+    <string name="dead">Dead</string>
+    <string name="unknown">Unknown</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="genderless">Genderless</string>
+    <string name="title_btn_apply">Apply</string>
+    <string name="species">Species</string>
+    <string name="human">Human</string>
+    <string name="humanoid">Humanoid</string>
+    <string name="robot">Robot</string>
+    <string name="animal">Animal</string>
+    <string name="alien">Alien</string>
+    <string name="cronenberg">Cronenberg</string>
+    <string name="poopybutthole">Poopybutthole</string>
+    <string name="mythological_creature">Mythological Creature</string>
+
+
+</resources>
