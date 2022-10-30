@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.abb.rickandmorttask.R
 import com.abb.rickandmorttask.adabter.CharactersListAdapter
 import com.abb.rickandmorttask.databinding.FragmentOfcharactersBinding
+import com.abb.rickandmorttask.model.Character
 import com.abb.rickandmorttask.retrofit.Repository
 import com.abb.rickandmorttask.viewmodel.CharacterListViewModel
 import com.abb.rickandmorttask.viewmodel.CharactersViewModelFactory
@@ -29,7 +30,6 @@ class CharactersListFragment: Fragment() {
         Repository()
     )}
     private var loading = false
-    private var isPaging = false
     private lateinit var staggeredGridLayoutManager:StaggeredGridLayoutManager
     private var characterslistadapter:CharactersListAdapter?=null
     private var  pastVisibleItem: Int=0
@@ -70,6 +70,7 @@ class CharactersListFragment: Fragment() {
 
 
            txtReset.setOnClickListener {
+               characterviewModel.name.value=""
                 characterviewModel.getCharacters(1)
                 characterviewModel.filterValue.value = arrayOf(0,0,0)
                 characterviewModel.filterValues.value= arrayOf("","","")
@@ -91,11 +92,15 @@ class CharactersListFragment: Fragment() {
     private fun searchCharacterbyName() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                characterviewModel.getByName(query.toString(),
+                characterviewModel.name.value=query.toString()
+                characterviewModel.isFilter.value=true
+                characterviewModel.listofFilteredItems.value!!.clear()
+                characterviewModel.getBySpeciesAndStatusAndGenderAndName(query.toString(),
                     characterviewModel.filterValues.value!![0],
                     characterviewModel.filterValues.value!![1],
                     characterviewModel.filterValues.value!![2],
                     page)
+
                 return true
             }
 
@@ -109,7 +114,7 @@ class CharactersListFragment: Fragment() {
         binding.recycleviewOfcharacterslist.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-
+                characterviewModel.isPaging.value=true
                 if(!recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN))
                 {
                     loading = true
@@ -127,47 +132,49 @@ class CharactersListFragment: Fragment() {
                 if(firstVisibleItems != null && firstVisibleItems.isNotEmpty()) {
                     pastVisibleItem = firstVisibleItems[0];
                 }
-                Log.d("Tag","Errs"+visibleItems+"df"+totalItems+"s"+pastVisibleItem)
                 if (loading && dy>0) {
-                    if ((visibleItems+ pastVisibleItem) >= totalItems && pastVisibleItem>0 && visibleItems>0) {
+                    if ((visibleItems+ pastVisibleItem) == totalItems) {
                         loading = false
-                        isPaging=true
                         page += 1
                         if (characterviewModel.isFilter.value==false){
                                 characterviewModel.getCharacters(page)
                         }
                         else{
-                          characterviewModel.getBySpeciesAndStatusAndGender(
+                          characterviewModel.getBySpeciesAndStatusAndGenderAndName(
+                              characterviewModel.name.value.toString(),
                               characterviewModel.filterValues.value!![0],
                               characterviewModel.filterValues.value!![1],
                               characterviewModel.filterValues.value!![2],
                               page)
                         }
-                        binding.progressBar.visibility=View.VISIBLE
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            getLivedataObserve()
-                            binding.progressBar.visibility=View.GONE
-                        }, 1000)
+
 
 
                     }
                 }
+
             }
         })
     }
 
     private fun getLivedataObserve(){
-        characterviewModel.liveDatalistofCharacter.observe(viewLifecycleOwner,{ response->
-            if (response.isSuccessful){
-                characterslistadapter!!.setCharactersList(response.body()!!.results)
-            }
-            else{
-                if (!isPaging) {
-                    characterslistadapter!!.setCharactersList(emptyList())
-                    Log.d("TAG", "Error" + response.message())
+
+            characterviewModel.liveDatalistofCharacter.observe(viewLifecycleOwner,{ response->
+                if (response.isSuccessful){
+
+                        characterviewModel.listofFilteredItems.value!!.addAll(response.body()!!.results)
+                        characterslistadapter!!.setCharactersList(characterviewModel.listofFilteredItems.value!!)
+
                 }
-            }
-        })
+                else{
+                    if (characterviewModel.isPaging.value==false){
+                        characterslistadapter!!.setCharactersList(emptyList())
+                    }
+
+                }
+            })
+
+
     }
     override fun onDestroyView() {
         super.onDestroyView()

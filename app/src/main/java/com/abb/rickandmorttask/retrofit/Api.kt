@@ -10,16 +10,11 @@ interface Api {
     suspend fun getCharacterList(@Query("page") page : Int): Response<CharactersInfo>
 
     @GET("character")
-    suspend fun getCharactersByName(@Query("name") name : String,
+    suspend fun getCharactersbySpeciesAndStatusAndGenderAndbyName(@Query("name") name : String,
                                     @Query("species") species : String,
                                     @Query("status") status : String,
                                     @Query("gender") gender : String,
                                     @Query("page") page : Int):Response<CharactersInfo>
 
-    @GET("character")
-    suspend fun getCharactersbyStatusAndGenderAndSpecies(@Query("species") species : String,
-                                                @Query("status") status : String,
-                                                @Query("gender") gender : String,
-                                                @Query("page") page : Int):Response<CharactersInfo>
 
 }

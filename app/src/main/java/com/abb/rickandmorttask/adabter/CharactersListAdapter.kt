@@ -3,9 +3,11 @@ package com.abb.rickandmorttask.adabter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.abb.rickandmorttask.databinding.AdapterOfcharacterBinding
+import com.abb.rickandmorttask.databinding.FragmentOfcharactersBinding
 import com.abb.rickandmorttask.fragments.CharactersListFragmentDirections
 import com.abb.rickandmorttask.model.Character
 import com.bumptech.glide.Glide

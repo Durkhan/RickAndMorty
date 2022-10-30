@@ -43,11 +43,14 @@ class FilterFragment:BottomSheetDialogFragment() {
         })
         with(binding) {
             btnMakeFilter.setOnClickListener {
+                viewModel.listofFilteredItems.value!!.clear()
+                viewModel.name.value=""
                 if (chipgroupSpecies.getStatusTextChipChecked()
                         .isNotEmpty() && chipgroupStatus.getStatusTextChipChecked()
                         .isNotEmpty() && radiogroupGender.getTextButtonChecked().isNotEmpty()
                 ) {
-                    viewModel.getBySpeciesAndStatusAndGender(
+                    viewModel.getBySpeciesAndStatusAndGenderAndName(
+                        viewModel.name.value.toString(),
                         chipgroupSpecies.getSpeciesTextChipChecked(),
                         chipgroupStatus.getStatusTextChipChecked(),
                         radiogroupGender.getTextButtonChecked(),
@@ -61,6 +64,7 @@ class FilterFragment:BottomSheetDialogFragment() {
 
                     viewModel.filterValues.value =
                         arrayOf(
+                            viewModel.name.value.toString(),
                             chipgroupSpecies.getSpeciesTextChipChecked(),
                             chipgroupStatus.getStatusTextChipChecked(),
                             radiogroupGender.getTextButtonChecked()
