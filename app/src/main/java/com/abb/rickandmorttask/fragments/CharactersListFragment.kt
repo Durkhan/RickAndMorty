@@ -70,7 +70,7 @@ class CharactersListFragment: Fragment() {
 
 
            txtReset.setOnClickListener {
-               characterviewModel.name.value=""
+               characterviewModel.name.value=" "
                 characterviewModel.getCharacters(1)
                 characterviewModel.filterValue.value = arrayOf(0,0,0)
                 characterviewModel.filterValues.value= arrayOf("","","")

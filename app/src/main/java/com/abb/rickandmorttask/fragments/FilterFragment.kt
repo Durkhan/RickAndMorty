@@ -44,7 +44,7 @@ class FilterFragment:BottomSheetDialogFragment() {
         with(binding) {
             btnMakeFilter.setOnClickListener {
                 viewModel.listofFilteredItems.value!!.clear()
-                viewModel.name.value=""
+                viewModel.name.value=" "
                 if (chipgroupSpecies.getStatusTextChipChecked()
                         .isNotEmpty() && chipgroupStatus.getStatusTextChipChecked()
                         .isNotEmpty() && radiogroupGender.getTextButtonChecked().isNotEmpty()
