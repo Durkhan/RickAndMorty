@@ -60,10 +60,6 @@ class CharactersListFragment: Fragment() {
         characterslistadapter= CharactersListAdapter(requireContext())
 
         binding.apply {
-            swiperefresh.setOnRefreshListener {
-                getLivedataObserve()
-                swiperefresh.isRefreshing=false
-            }
             btnFilter.setOnClickListener {
                 findNavController().navigate(R.id.action_charactersListFragment_to_filterFragment)
             }
